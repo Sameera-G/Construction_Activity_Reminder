@@ -1,0 +1,2 @@
+# Construction_Activity_Reminder
+Construction Activity Reminder Android Application
