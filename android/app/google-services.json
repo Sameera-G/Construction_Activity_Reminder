@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "817461286800",
+    "project_id": "constreminder",
+    "storage_bucket": "constreminder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817461286800:android:5fc0b9d7a927fea0ba8515",
+        "android_client_info": {
+          "package_name": "com.example.constreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817461286800-nmblnh6pqv2j6dnnkn98r3mj8spa56n5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB66EMIEdt_JnAAHyPOR5hJ_um4W9Bk9AE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817461286800-nmblnh6pqv2j6dnnkn98r3mj8spa56n5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
