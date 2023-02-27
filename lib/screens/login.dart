@@ -1,3 +1,6 @@
+import 'package:constreminder/screens/forgotpassword.dart';
+import 'package:constreminder/screens/phonelogin.dart';
+import 'package:constreminder/screens/registereduserpg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -152,7 +155,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     passwordField,
                     TextButton(
                       onPressed: () {
-                        //for forgot password
+                        Navigator.of(context).pushReplacement(
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            alignment: Alignment.topCenter,
+                            duration: Duration(milliseconds: 600),
+                            isIos: true,
+                            child: const ForgotPassword(),
+                          ),
+                        );
                       },
                       child: const Text(
                         'Forgot Password?',
@@ -169,8 +180,55 @@ class _LoginScreenState extends State<LoginScreen> {
                             strokeWidth: 5.0,
                           )
                         : loginButton,
+
                     const SizedBox(
                       height: 30.0,
+                    ),
+                    //login with phone
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Text(
+                          "Login with ",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              loadingprogress2 = true;
+                            });
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.fade,
+                                    alignment: Alignment.topCenter,
+                                    duration: Duration(milliseconds: 800),
+                                    isIos: true,
+                                    child: const PhoneLogin()));
+                            setState(() {
+                              loadingprogress2 = false;
+                            });
+                          },
+                          child: loadingprogress2
+                              ? const CircularProgressIndicator(
+                                  color: Colors.amber,
+                                  backgroundColor:
+                                      Color.fromARGB(255, 243, 240, 240),
+                                  strokeWidth: 5.0,
+                                )
+                              : const Text(
+                                  'Mobile Number',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -240,10 +298,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        loadingprogress = true;
-      });
-
       await _auth
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => {
@@ -254,9 +308,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.topCenter,
                     duration: Duration(milliseconds: 600),
                     isIos: true,
-                    child: const MyHomePage(),
+                    child: const RegisteredUser(),
                   ),
                 ),
+                setState(() {
+                  loadingprogress = true;
+                }),
               })
           .catchError((e) {
         return {
@@ -265,6 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } else {
       Fluttertoast.showToast(msg: 'information fetching error');
+      loadingprogress = false;
     }
   }
 }

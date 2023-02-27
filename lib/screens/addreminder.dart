@@ -4,9 +4,9 @@ import 'package:constreminder/screens/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:constreminder/model/my_encryption.dart';
-import 'package:constreminder/model/user_model.dart';
-import 'package:constreminder/screens/login.dart';
+//import 'package:constreminder/model/my_encryption.dart';
+//import 'package:constreminder/model/user_model.dart';
+//import 'package:constreminder/screens/login.dart';
 import 'package:page_transition/page_transition.dart';
 
 class AddReminders extends StatefulWidget {

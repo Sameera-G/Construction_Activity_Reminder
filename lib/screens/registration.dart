@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:constreminder/screens/regverification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -503,6 +504,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         textColor: Colors.white,
         fontSize: 18.0);
     Navigator.pushReplacement((context),
-        MaterialPageRoute(builder: (context) => const LoginScreen()));
+        MaterialPageRoute(builder: (context) => const Verification()));
   }
 }

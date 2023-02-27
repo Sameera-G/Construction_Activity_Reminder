@@ -23,9 +23,8 @@ class _GetStartState extends State<GetStart> {
         width: width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/back1.jpg'),
+            image: AssetImage('images/backstart.jpg'),
             fit: BoxFit.cover,
-            opacity: 0.5,
             colorFilter: ColorFilter.mode(Colors.black87, BlendMode.dstATop),
           ),
         ),
@@ -34,12 +33,12 @@ class _GetStartState extends State<GetStart> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'images/logo.png',
-              width: width * 0.2,
+              'images/logo3.png',
+              width: width * 0.7,
               height: height * 0.2,
             ),
             const SizedBox(
-              height: 20,
+              height: 10.0,
             ),
             const Text(
               'Your Pocket Site Activity Reminder Assistant',
@@ -51,7 +50,7 @@ class _GetStartState extends State<GetStart> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(
-              height: 30,
+              height: 10,
             ),
             MaterialButton(
               onPressed: () {
@@ -69,7 +68,7 @@ class _GetStartState extends State<GetStart> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               textColor: Colors.white,
               minWidth: 300,
-              height: 50,
+              height: 40,
               child: const Text(
                 'Getting Started',
                 style: TextStyle(fontSize: 18.0),
