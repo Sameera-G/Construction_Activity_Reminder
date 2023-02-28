@@ -23,7 +23,7 @@ class _GetStartState extends State<GetStart> {
         width: width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('images/back3.jpg'),
+            image: AssetImage('images/back2.jpg'),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(Colors.black87, BlendMode.dstATop),
           ),
