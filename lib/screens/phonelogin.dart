@@ -1,5 +1,4 @@
 import 'package:constreminder/screens/homepage.dart';
-import 'package:constreminder/screens/registereduserpg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +21,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   String verificationIDReceived = '';
+
   bool otpCodeVisible = false;
   bool showGtButton = false;
 
@@ -40,6 +40,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
           image: DecorationImage(
             image: AssetImage("images/back2.jpg"),
             fit: BoxFit.cover,
+            opacity: 0.2,
           ),
         ),
         //margin: const EdgeInsets.all(15),
@@ -121,7 +122,7 @@ class _PhoneLoginState extends State<PhoneLogin> {
                     }
                   },
                   child: Text(
-                    otpCodeVisible ? 'To Reset Password' : 'Get OTP',
+                    otpCodeVisible ? 'Log In' : 'Get OTP',
                     style: TextStyle(fontSize: 24.0),
                   ),
                 ),
@@ -137,12 +138,9 @@ class _PhoneLoginState extends State<PhoneLogin> {
     _auth.verifyPhoneNumber(
         phoneNumber: phoneController.text.trim(),
         verificationCompleted: (PhoneAuthCredential credential) async {
-          if (_auth.currentUser!.phoneNumber.toString() == phNumber) {
-            Navigator.pushReplacement((context),
-                MaterialPageRoute(builder: (context) => MyHomePage()));
-            Fluttertoast.showToast(msg: "Now you can reset password")
-                .catchError((error) => Fluttertoast.showToast(msg: "$error"));
-          }
+          await _auth.signInWithCredential(credential).then((value) {
+            print('you are logged in');
+          });
         },
         verificationFailed: (FirebaseAuthException exception) {
           print(exception.message);
@@ -159,12 +157,15 @@ class _PhoneLoginState extends State<PhoneLogin> {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationIDReceived,
         smsCode: otpCodeController.text);
-    if (credential.smsCode == otpCodeController.text &&
-        credential.verificationId == verificationIDReceived) {
-      Navigator.pushReplacement(
-          (context), MaterialPageRoute(builder: (context) => MyHomePage()));
-      Fluttertoast.showToast(msg: "Now you can reset password")
-          .catchError((error) => Fluttertoast.showToast(msg: "$error"));
-    }
+    await _auth.signInWithCredential(credential).then((value) {
+      print('you are logged in');
+      if (credential.smsCode == otpCodeController.text &&
+          credential.verificationId == verificationIDReceived) {
+        Navigator.pushReplacement(
+            (context), MaterialPageRoute(builder: (context) => MyHomePage()));
+        Fluttertoast.showToast(msg: "Now you are logged in")
+            .catchError((error) => Fluttertoast.showToast(msg: "$error"));
+      }
+    });
   }
 }

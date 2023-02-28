@@ -1,6 +1,4 @@
 import 'dart:async';
-//import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:constreminder/screens/registereduserpg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:constreminder/screens/homepage.dart';
@@ -64,7 +62,7 @@ class _VerificationState extends State<Verification> {
   @override
   Widget build(BuildContext context) {
     return isEmailVerified
-        ? RegisteredUser()
+        ? MyHomePage()
         : Scaffold(
             appBar: AppBar(
               title: Text('verification'),

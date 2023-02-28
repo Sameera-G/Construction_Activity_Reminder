@@ -54,14 +54,7 @@ class _GetStartState extends State<GetStart> {
             ),
             MaterialButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.fade,
-                        alignment: Alignment.topCenter,
-                        duration: Duration(milliseconds: 600),
-                        isIos: true,
-                        child: const LoginScreen()));
+                Navigator.pushNamed(context, '/login');
               },
               color: Colors.blue,
               shape: RoundedRectangleBorder(

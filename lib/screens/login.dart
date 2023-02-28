@@ -1,6 +1,5 @@
 import 'package:constreminder/screens/forgotpassword.dart';
 import 'package:constreminder/screens/phonelogin.dart';
-import 'package:constreminder/screens/registereduserpg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -127,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
           image: DecorationImage(
             image: AssetImage('images/back2.jpg'),
             fit: BoxFit.cover,
-            opacity: 0.5,
+            opacity: 0.1,
           ),
         ),
         child: Center(
@@ -193,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         GestureDetector(
-                          onTap: () async {
+                          onTap: () {
                             setState(() {
                               loadingprogress2 = true;
                             });
@@ -238,7 +237,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.white),
                         ),
                         GestureDetector(
-                          onTap: () async {
+                          onTap: () {
                             setState(() {
                               loadingprogress2 = true;
                             });
@@ -308,7 +307,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     alignment: Alignment.topCenter,
                     duration: Duration(milliseconds: 600),
                     isIos: true,
-                    child: const RegisteredUser(),
+                    child: const MyHomePage(),
                   ),
                 ),
                 setState(() {

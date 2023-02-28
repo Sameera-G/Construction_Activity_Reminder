@@ -64,8 +64,9 @@ class _YourProfileState extends State<YourProfile> {
           width: width,
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/profileback.jpg"),
+              image: AssetImage("images/back2.jpg"),
               fit: BoxFit.cover,
+              opacity: 0.2,
             ),
           ),
           child: Column(

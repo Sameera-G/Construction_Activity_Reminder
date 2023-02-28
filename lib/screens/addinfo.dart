@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:constreminder/model/remindermodal.dart';
+import 'package:constreminder/model/my_encryption.dart';
+import 'package:constreminder/model/user_model.dart';
 import 'package:constreminder/screens/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,79 +10,69 @@ import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:constreminder/screens/login.dart';
 import 'package:page_transition/page_transition.dart';
 
-class AddReminders extends StatefulWidget {
-  const AddReminders({Key? key}) : super(key: key);
+class AddInfo extends StatefulWidget {
+  const AddInfo({Key? key}) : super(key: key);
 
   @override
-  State<AddReminders> createState() => _RegistrationScreenState();
+  State<AddInfo> createState() => _AddInfoState();
 }
 
-class _RegistrationScreenState extends State<AddReminders> {
+class _AddInfoState extends State<AddInfo> {
   //form validation checking auth - then post the values to firestore
   final _auth = FirebaseAuth.instance;
   //form key defninig
   final _formKey = GlobalKey<FormState>();
   //controllers for the text fields
-  final remNameEdCntrl = TextEditingController();
-  final remTypEditCntrl = TextEditingController();
-  final tecNameEditCntrl = TextEditingController();
-  final testEditCntrl = TextEditingController();
-  final testDateCntrl = TextEditingController();
-  final testTimeEditCntrl = TextEditingController();
-  final testLocEditCntrl = TextEditingController();
-  var tName, tId, tLocation, tDate, tTime, tType, tTechnician, eMailEnc;
+  final firstNameEditingController = TextEditingController();
+  final secondNameEditingController = TextEditingController();
+  final emailEditingController = TextEditingController();
+  final homeAddressEditingController = TextEditingController();
+  final passwordEditingController = TextEditingController();
+  final confirmPassEditingController = TextEditingController();
+  final mobileEditingController = TextEditingController();
+  var fName, sName, hAddress, mNumber, email;
+
+  UserModel loggedInUser = UserModel();
+  User? user = FirebaseAuth.instance.currentUser;
 
   //loding indicator
   bool loadingprogress = false;
 
   @override
+  void initState() {
+    //implement initState
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      loggedInUser = UserModel.fromMap(value.data());
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     //************************************************************************** */
-    //reminder name
-    final reminderName = TextFormField(
+    //first name text field design
+    final firstNameField = TextFormField(
       autofocus: false,
-      controller: remNameEdCntrl,
+      controller: firstNameEditingController,
       validator: (value) {
         RegExp regex = RegExp(r'^.{3,}$');
         if (value!.isEmpty) {
-          return ("Reminder Name Cannot be empty");
+          return ("First Name Cannot be empty");
         }
         if (!regex.hasMatch(value)) {
           return ("Please Enter a Valid Name (Min 3 Characters");
         }
-        return null;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: Colors.white),
-        ),
-        filled: true,
-        fillColor: Colors.transparent,
-        prefixIcon: const Icon(
-          Icons.remember_me,
-        ),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Reminder Name',
-        prefixIconColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-    //************************************************************************** */
-    //reminder typee
-    final reminderType = TextFormField(
-      autofocus: false,
-      controller: remTypEditCntrl,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return ("Reminder Type Cannot be empty");
-        }
+        setState(() {
+          fName = MyEncryptionDecryption.encryptionAES(value).base64;
+        });
         return null;
       },
       onSaved: (value) {
-        value = remTypEditCntrl.text;
+        value = firstNameEditingController.text;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -91,10 +82,10 @@ class _RegistrationScreenState extends State<AddReminders> {
         filled: true,
         fillColor: Colors.transparent,
         prefixIcon: const Icon(
-          Icons.type_specimen,
+          Icons.account_circle,
         ),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Reminder type - New test or Re-test',
+        hintText: 'First Name',
         prefixIconColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -102,23 +93,61 @@ class _RegistrationScreenState extends State<AddReminders> {
       ),
     );
     //************************************************************************** */
-    // technician name
-    final technicianName = TextFormField(
+    //second name field design
+    final secondNameField = TextFormField(
       autofocus: false,
-      controller: tecNameEditCntrl,
+      controller: secondNameEditingController,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Second Name Cannot be empty");
+        }
+        setState(() {
+          sName = MyEncryptionDecryption.encryptionAES(value).base64;
+        });
+        return null;
+      },
+      onSaved: (value) {
+        value = secondNameEditingController.text;
+      },
+      textInputAction: TextInputAction.next,
+      decoration: InputDecoration(
+        enabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1, color: Colors.white),
+        ),
+        filled: true,
+        fillColor: Colors.transparent,
+        prefixIcon: const Icon(
+          Icons.account_circle_outlined,
+        ),
+        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
+        hintText: 'Second Name',
+        prefixIconColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
+    //************************************************************************** */
+    // email controller design
+    final emailField = TextFormField(
+      autofocus: false,
+      controller: emailEditingController,
       keyboardType: TextInputType.emailAddress,
       validator: (value) {
         if (value!.isEmpty) {
-          return ("Technician Name");
+          return ("Please Enter Your Email");
         }
         // reg expression for email validation
-        if (RegExp("").hasMatch(value)) {
-          return ("Please Enter a valid name");
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)) {
+          return ("Please Enter a valid email");
         }
+        setState(() {
+          email = MyEncryptionDecryption.encryptionAES(value).base64;
+        });
         return null;
       },
       onSaved: (value) {
-        value = tecNameEditCntrl.text;
+        value = emailEditingController.text;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -128,10 +157,10 @@ class _RegistrationScreenState extends State<AddReminders> {
         filled: true,
         fillColor: Colors.transparent,
         prefixIcon: const Icon(
-          Icons.people,
+          Icons.email,
         ),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Technician Name',
+        hintText: 'Email',
         prefixIconColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -139,22 +168,25 @@ class _RegistrationScreenState extends State<AddReminders> {
       ),
     );
     //************************************************************************* */
-    //test identification
-    final testId = TextFormField(
+    //home address
+    final homeAddressField = TextFormField(
       autofocus: false,
-      controller: testEditCntrl,
+      controller: homeAddressEditingController,
       validator: (value) {
         RegExp regex = RegExp(r'^.{3,}$');
         if (value!.isEmpty) {
-          return ("Test ID can not be empty");
+          return ("Address Cannot be empty");
         }
         if (!regex.hasMatch(value)) {
-          return ("Please Enter a Valid ID");
+          return ("Please Enter a Valid Address");
         }
+        setState(() {
+          hAddress = MyEncryptionDecryption.encryptionAES(value).base64;
+        });
         return null;
       },
       onSaved: (value) {
-        value = testEditCntrl.text;
+        value = homeAddressEditingController.text;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -164,10 +196,10 @@ class _RegistrationScreenState extends State<AddReminders> {
         filled: true,
         fillColor: Colors.transparent,
         prefixIcon: const Icon(
-          Icons.numbers,
+          Icons.account_circle,
         ),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Test Identification',
+        hintText: 'Home Address',
         prefixIconColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -175,22 +207,25 @@ class _RegistrationScreenState extends State<AddReminders> {
       ),
     );
     //************************************************************************* */
-    //test location
-    final testLocation = TextFormField(
+    //mobile number
+    final mobileNumberField = TextFormField(
       autofocus: false,
-      controller: testLocEditCntrl,
+      controller: mobileEditingController,
       validator: (value) {
         RegExp regex = RegExp(r'^.{3,}$');
         if (value!.isEmpty) {
-          return ("Add a location");
+          return ("Mobile Number Cannot be empty");
         }
         if (!regex.hasMatch(value)) {
-          return ("Enter a valid Location");
+          return ("Please Enter a Valid Mobile Number");
         }
+        setState(() {
+          mNumber = MyEncryptionDecryption.encryptionAES(value).base64;
+        });
         return null;
       },
       onSaved: (value) {
-        value = testLocEditCntrl.text;
+        value = mobileEditingController.text;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -200,93 +235,17 @@ class _RegistrationScreenState extends State<AddReminders> {
         filled: true,
         fillColor: Colors.transparent,
         prefixIcon: const Icon(
-          Icons.location_city,
+          Icons.account_circle,
         ),
         contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Test Location',
+        hintText: 'Number with +358 xx xxx xxxx',
         prefixIconColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
     );
-    //Test Date Field
-    final testDate = TextFormField(
-      autofocus: false,
-      controller: testDateCntrl,
-      validator: (value) {
-        RegExp regex = RegExp('r^[0-9]');
-        if (value!.isEmpty) {
-          return 'Please enter Date';
-        } else {
-          if (regex.hasMatch(value)) {
-            return 'Enter a valid Date';
-          } else {
-            return null;
-          }
-        }
-      },
-      onSaved: (value) {
-        testDateCntrl.text = value!;
-      },
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: Colors.white),
-        ),
-        errorStyle: const TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          backgroundColor: Colors.black,
-          fontSize: 13,
-        ),
-        errorMaxLines: 2,
-        filled: true,
-        fillColor: Colors.transparent,
-        prefixIcon: const Icon(
-          Icons.date_range,
-        ),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Date to be tested',
-        prefixIconColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
-    //****************************************************************************** */
-    //Time of the test
-    final testTime = TextFormField(
-      autofocus: false,
-      controller: testTimeEditCntrl,
-      obscureText: true,
-      validator: (value) {
-        if (testTimeEditCntrl.text.isEmpty) {
-          return "Time Cannot be empty";
-        }
-        return null;
-      },
-      onSaved: (value) {
-        testTimeEditCntrl.text = value!;
-      },
-      textInputAction: TextInputAction.done,
-      decoration: InputDecoration(
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(width: 1, color: Colors.white),
-        ),
-        filled: true,
-        fillColor: Colors.transparent,
-        prefixIcon: const Icon(
-          Icons.timelapse,
-        ),
-        contentPadding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: 'Time to be Reminded',
-        prefixIconColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-      ),
-    );
+
     //**************************************************************************** */
     //sign up button
     final addReminderBtn = Material(
@@ -299,13 +258,11 @@ class _RegistrationScreenState extends State<AddReminders> {
         minWidth: MediaQuery.of(context).size.width,
         onPressed: () {
           setState(() {
-            tName = remNameEdCntrl.value.text;
-            tType = remTypEditCntrl.value.text;
-            tTechnician = tecNameEditCntrl.value.text;
-            tId = testEditCntrl.value.text;
-            tLocation = testLocEditCntrl.value.text;
-            tDate = testDateCntrl.value.text;
-            tTime = testTimeEditCntrl.value.text;
+            fName = firstNameEditingController.value.text;
+            sName = secondNameEditingController.value.text;
+            email = emailEditingController.value.text;
+            hAddress = homeAddressEditingController.value.text;
+            mNumber = mobileEditingController.value.text;
           });
           addReminder();
           Navigator.of(context).pushReplacement(
@@ -339,9 +296,9 @@ class _RegistrationScreenState extends State<AddReminders> {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/backprevious.jpg"),
+              image: AssetImage("images/reg.jpg"),
               fit: BoxFit.cover,
-              opacity: 0.2,
+              opacity: 0.5,
             ),
           ),
           child: Padding(
@@ -353,34 +310,29 @@ class _RegistrationScreenState extends State<AddReminders> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    reminderName,
+                    //top logo of the construction
+
+                    firstNameField,
                     const SizedBox(
                       height: 20.0,
                     ),
-                    reminderType,
+                    secondNameField,
                     const SizedBox(
                       height: 20.0,
                     ),
-                    technicianName,
+                    emailField,
                     const SizedBox(
                       height: 20.0,
                     ),
-                    testId,
+                    homeAddressField,
                     const SizedBox(
                       height: 20.0,
                     ),
-                    testLocation,
+                    mobileNumberField,
                     const SizedBox(
                       height: 20.0,
                     ),
-                    testDate,
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    testTime,
-                    const SizedBox(
-                      height: 20.0,
-                    ),
+
                     loadingprogress
                         ? const CircularProgressIndicator(
                             color: Colors.amber,
@@ -400,18 +352,19 @@ class _RegistrationScreenState extends State<AddReminders> {
                         ),
                         TextButton(
                           onPressed: () {
-                            remNameEdCntrl.text = '';
-                            remTypEditCntrl.text = '';
-                            testEditCntrl.text = '';
-                            testLocEditCntrl.text = '';
-                            tecNameEditCntrl.text = '';
-                            testTimeEditCntrl.text = '';
-                            testDateCntrl.text = '';
+                            firstNameEditingController.text = '';
+                            secondNameEditingController.text = '';
+                            homeAddressEditingController.text = '';
+                            emailEditingController.text = '';
+                            mobileEditingController.text = '';
+                            passwordEditingController.text = '';
+                            confirmPassEditingController.text = '';
                           },
                           child: const Text('Cancel Form'),
                         ),
                       ],
                     ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -424,8 +377,7 @@ class _RegistrationScreenState extends State<AddReminders> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        const AddReminders()));
+                                    builder: (context) => const AddInfo()));
                           },
                           child: const Text(
                             'Instructions',
@@ -448,41 +400,33 @@ class _RegistrationScreenState extends State<AddReminders> {
     );
   }
 
-  FirebaseFirestore reminders = FirebaseFirestore.instance;
+  FirebaseFirestore userinfo = FirebaseFirestore.instance;
 
   Future<void> addReminder() {
     loadingprogress = true;
     User? user = _auth.currentUser;
-    ReminderModel? reminderModel = ReminderModel();
-
-    reminderModel.reminderName = tName;
-    reminderModel.reminderType = tType;
-    reminderModel.Location = tLocation;
-    reminderModel.TechnicanN = tTechnician;
-    reminderModel.TestIdentification = tId;
-    reminderModel.DateofTest = tDate;
-    reminderModel.TimeofTest = tTime;
+    UserModel? userModel = UserModel();
 
     //encryption of data
-    /*
-    String tNametoStore = MyEncryptionDecryption.encryptionAES(tName).base64;
-    String tTypetoStore = MyEncryptionDecryption.encryptionAES(tType).base64;
-    String tTechniciantoStore =
-        MyEncryptionDecryption.encryptionAES(tTechnician).base64;
-    String tIDtoStore = MyEncryptionDecryption.encryptionAES(tId).base64;
-    String tLocationtoStore = MyEncryptionDecryption.encryptionAES(tLocation).base64;
-    String tDatetoStore = MyEncryptionDecryption.encryptionAES(tDate).base64;
-    String tTimetoStore = MyEncryptionDecryption.encryptionAES(tTime).base64;
-    */
+
+    userModel.email = email;
+    userModel.uid = user?.uid;
+    userModel.firstName =
+        MyEncryptionDecryption.encryptionAES(fName).base64.toString();
+    userModel.secondName =
+        MyEncryptionDecryption.encryptionAES(sName).base64.toString();
+    userModel.homeAddress =
+        MyEncryptionDecryption.encryptionAES(hAddress).base64.toString();
+    userModel.mobileNumber =
+        MyEncryptionDecryption.encryptionAES(mNumber).base64.toString();
+
     loadingprogress = false;
     // Call the user's CollectionReference to add a new user
-    return reminders
+    return userinfo
         .collection('users')
         .doc(user!.uid)
-        .collection('reminders')
-        .doc(reminderModel.TestIdentification)
-        .set(reminderModel.toMap())
-        .then((value) => Fluttertoast.showToast(msg: "Reminder added"))
+        .set(userModel.toMap())
+        .then((value) => Fluttertoast.showToast(msg: "Info added"))
         .catchError((error) {
       return Fluttertoast.showToast(msg: error);
     });

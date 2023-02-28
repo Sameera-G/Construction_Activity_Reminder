@@ -37,6 +37,7 @@ class _RemindersListState extends State<RemindersList> {
           image: DecorationImage(
             image: AssetImage("images/smart13.jpg"),
             fit: BoxFit.cover,
+            opacity: 0.2,
           ),
         ),
         child: Column(
@@ -49,8 +50,8 @@ class _RemindersListState extends State<RemindersList> {
                     decoration: BoxDecoration(
                         color: Colors.orange, shape: BoxShape.circle),
                     child: CircleAvatar(
-                      radius: 50, // Image radius
-                      backgroundImage: AssetImage("images/logo1.png"),
+                      radius: 30, // Image radius
+                      backgroundImage: AssetImage("images/logo3.png"),
                     ),
                   ),
                   Expanded(
