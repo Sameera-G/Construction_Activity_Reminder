@@ -27,5 +27,16 @@ Remind the tests and the dates of the tests
 Add future tests which should be done
 Remind tests according to the location (location triggered reminders - if a consultant visits the site, he will be reminded about the set of tests which should be performed in the particular area.
 
+Pages are shown in the below...
 
 ![Screenshot_20230228-042117](https://user-images.githubusercontent.com/123941231/221751249-7377605b-7967-459c-bdad-a705b891d322.jpg)
+
+![Screenshot_20230228-042126](https://user-images.githubusercontent.com/123941231/221751373-c44eee19-b3bb-4203-a84b-5d40292a8439.jpg)
+
+![Screenshot_20230228-042151](https://user-images.githubusercontent.com/123941231/221751402-dc1abd8e-433f-4d74-945e-3d4ad84bf03f.jpg)
+
+![Screenshot_20230228-053758](https://user-images.githubusercontent.com/123941231/221751419-16c31441-4410-4ec6-aa92-cbec5dbdff22.jpg)
+
+![Screenshot_20230228-054129](https://user-images.githubusercontent.com/123941231/221751443-d68026ef-a040-4b3a-9da6-551663cd8160.jpg)
+
+![Screenshot_20230228-055215](https://user-images.githubusercontent.com/123941231/221751464-ae272c10-d0c4-43eb-aeb3-5a53f68dcb13.jpg)
