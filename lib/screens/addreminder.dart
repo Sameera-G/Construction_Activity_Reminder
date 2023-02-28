@@ -339,7 +339,7 @@ class _RegistrationScreenState extends State<AddReminders> {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/backprevious.jpg"),
+              image: AssetImage("images/back2.jpg"),
               fit: BoxFit.cover,
               opacity: 0.2,
             ),

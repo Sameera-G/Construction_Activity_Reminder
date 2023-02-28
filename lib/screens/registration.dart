@@ -340,7 +340,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("images/reg.jpg"),
+              image: AssetImage("images/back2.jpg"),
               fit: BoxFit.cover,
               opacity: 0.5,
             ),

@@ -35,7 +35,7 @@ class _RemindersListState extends State<RemindersList> {
         height: height,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("images/smart13.jpg"),
+            image: AssetImage("images/back2.jpg"),
             fit: BoxFit.cover,
             opacity: 0.2,
           ),

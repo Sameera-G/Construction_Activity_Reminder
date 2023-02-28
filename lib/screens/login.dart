@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
           image: DecorationImage(
             image: AssetImage('images/back2.jpg'),
             fit: BoxFit.cover,
-            opacity: 0.1,
+            opacity: 1,
           ),
         ),
         child: Center(
