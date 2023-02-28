@@ -27,6 +27,12 @@ Remind the tests and the dates of the tests
 Add future tests which should be done
 Remind tests according to the location (location triggered reminders - if a consultant visits the site, he will be reminded about the set of tests which should be performed in the particular area.
 
+Working steps of the application...
+
+[Gamage_HW1.pptx](https://github.com/Sameera-G/Construction_Activity_Reminder/files/10846799/Gamage_HW1.pptx)
+
+https://unioulu-my.sharepoint.com/:v:/g/personal/sgamage22_student_oulu_fi/EcCWYQzX9_ZOufPGvEnePtkBTgAzdFrQpxDaFV3Mhsb-MQ?e=WoZP8I
+
 Pages are shown in the below...
 
 ![Screenshot_20230228-042117](https://user-images.githubusercontent.com/123941231/221751249-7377605b-7967-459c-bdad-a705b891d322.jpg)
