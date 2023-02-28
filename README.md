@@ -1,6 +1,6 @@
 # Construction Test Reminder
 
-A project to make activities easy
+A project to make construction activities easy
 
 ## Starting
 
